@@ -33,8 +33,20 @@ If you already have AG News CSV files (for example `dataset/train.csv` / `datase
 4. To train a DistilBERT model (quick demo mode):
 
 ```bash
-python -m src.models.train --data processed/processed_agnews.csv --output models/distilbert_sentiment --epochs 1 --sample 5000
+python -m src.models.train --data processed/processed_agnews.csv \
+    --output models/distilbert_sentiment \
+    --epochs 1 --sample 5000
 ```
+
+The training script now supports automatic dataset splitting. You can either provide a single CSV and let the script carve out a validation set via `--eval-ratio` (default 0.1), or specify explicit proportions for train/validation/test:
+
+```bash
+# 60/30/10 split of a single file
+python -m src.models.train --data dataset/agnews.csv \
+    --train-ratio 0.6 --test-ratio 0.3 --val-ratio 0.1
+```
+
+`--sample` still works for quick runs; labels will be pseudo-generated with VADER if missing.
 
 5. To run the API locally:
 
@@ -49,6 +61,17 @@ API Endpoints
 
 Notes for dissertation
 - The pipeline includes clear documentation for the weak labeling approach, evaluation metrics (accuracy, macro-F1), and code to reproduce results.
+- An evaluation helper (`src/models/evaluate.py`) can compare a trained model against the VADER baseline and output accuracy/F1 scores.
+
+  You can call the same code directly from Python instead of running
+  commands in the shell:
+  ```python
+  from src.models import evaluate
+  evaluate.inspect_labels("dataset/temp_eval.csv")  # see label column contents
+  evaluate.evaluate("models/distilbert_sentiment", "dataset/temp_eval.csv")
+  ```
+  This avoids quoting errors and lets you integrate evaluation into
+  notebooks or other scripts.
 - Code is robust to CPU/GPU selection and Windows paths using `pathlib`.
 
 Contact

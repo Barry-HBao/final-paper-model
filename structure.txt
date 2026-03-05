@@ -1,0 +1,35 @@
+final-paper-model/
+├── README.md
+├── requirements.txt
+├── run_example.py
+├── start_server.bat
+├── .gitignore
+├── .env.example
+├── dataset/
+│   ├── train.csv
+│   └── test.csv
+├── docs/
+│   └── notes.md
+├── models/                     ← 训练输出
+│   └── distilbert_sentiment_demo/
+│       ├── config.json
+│       ├── model.safetensors
+│       ├── tokenizer.json
+│       ├── tokenizer_config.json
+│       ├── training_args.bin
+│       └── checkpoint-225/…
+├── app/
+│   └── main.py                 ← FastAPI 服务
+├── src/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── data/
+│   │   └── preprocess.py
+│   ├── models/
+│   │   ├── train.py            ← 训练脚本
+│   │   └── inference.py        ← SentimentModel 封装
+│   └── unsupervised/
+│       └── vader_analyzer.py   ← VADER 词典基线
+└── tests/
+    ├── test_inference.py       ← 离线单元测试
+    └── run_inference_demo.py   ← 简易演示脚本

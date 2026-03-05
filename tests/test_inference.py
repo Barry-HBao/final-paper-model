@@ -4,8 +4,15 @@ These tests are lightweight: they create a temporary minimal model (from the pre
 """
 import tempfile
 from pathlib import Path
-import torch
 from types import SimpleNamespace
+
+# torch is an optional heavy dependency; skip tests if not available
+try:
+    import torch
+except ImportError:
+    import pytest
+
+    pytest.skip("torch not installed, skipping inference tests", allow_module_level=True)
 
 from src.models.inference import SentimentModel
 
